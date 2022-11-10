@@ -3,18 +3,22 @@ package main
 import (
 	"os"
 	"fmt"
-	"log"
+//	"log"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/joho/godotenv"
+//	"github.com/joho/godotenv"
 )
 
 func main(){	
 	/* Loading Environment Variables*/
-	getEnvs()
+	/* Deactive to deploy, active only local work */
+	// getEnvs()
 
 	/* Setting the port */
-	port := os.Getenv("PORT") || 4000
+	port := os.Getenv("PORT")
+
+	fmt.Println("port is :")
+	fmt.Println(port)
 	
 	/* Import Fiber */
 	app := fiber.New()
@@ -38,13 +42,16 @@ func main(){
 	
 }
 
+/*
+// Deactive to deploy, active only local work
 func getEnvs(){
-	/* Loading Environment Variables with godotenv */
+	// Loading Environment Variables with godotenv 
 	env := godotenv.Load(".env")
 	
-	/* If error, log! */
+	// If error, log! 
 	if env != nil {
 		log.Fatalf("Error loading .env file")
 	}
 	
 }
+*/
