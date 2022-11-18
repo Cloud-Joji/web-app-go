@@ -6,7 +6,7 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const response = await fetch(import.meta.env.VITE_BE_URI + '/certs', {
+    const response = await fetch('/certs', {
       method: 'POST',
       body: JSON.stringify({name}),
       headers: {
