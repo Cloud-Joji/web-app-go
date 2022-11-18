@@ -32,7 +32,17 @@ func main(){
 	app := fiber.New()
 
 	/* Connecting to Database */
-	connectDatabase()
+	username := os.Getenv("DB_USERNAME")
+	password := os.Getenv("DB_PASSWORD")
+	cluster := os.Getenv("DB_CLUSTER")
+
+	uri := "mongodb+srv://" + username + ":" + password + "@" + cluster + "/?retryWrites=true&w=majority"
+
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+
+	if err != nil{
+		panic(err)
+	}
 
 	/* Adding middleware to avoid CORS */
 	app.Use(cors.New())
@@ -54,7 +64,7 @@ func main(){
 
 		coll := client.Database("go-cert-wapp").Collection("Platzi")
 		coll.InsertOne(context.TODO(), bson.D{
-			cert.Name,
+			{"name", cert.Name},
 		})
 
 		return c.JSON(&fiber.Map{
@@ -80,17 +90,3 @@ func getEnvs(){
 	
 }
 */
-
-func connectDatabase(){
-	username := os.Getenv("DB_USERNAME")
-	password := os.Getenv("DB_PASSWORD")
-	cluster := os.Getenv("DB_CLUSTER")
-
-	uri := "mongodb+srv://" + username + ":" + password + "@" + cluster + "/?retryWrites=true&w=majority"
-
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
-
-	if err != nil{
-		panic(err)
-	}
-}
