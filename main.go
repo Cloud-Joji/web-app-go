@@ -1,7 +1,7 @@
 package main
 
 import (
-//	"os"
+	"os"
 	"fmt"
 //	"log"
 	"github.com/gofiber/fiber/v2"
@@ -15,8 +15,11 @@ func main(){
 	// getEnvs()
 
 	/* Setting the port */
-	// port := os.Getenv("PORT")
-	port := "4000"
+	port := os.Getenv("PORT")
+	
+	if port == ""{
+		port = "4000"
+	}
 
 	fmt.Println("Server listening on: " + port)
 	
