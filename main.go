@@ -18,8 +18,7 @@ func main(){
 	// port := os.Getenv("PORT")
 	port := "4000"
 
-	fmt.Println("port is :")
-	fmt.Println(port)
+	fmt.Println("Server listening on: " + port)
 	
 	/* Import Fiber */
 	app := fiber.New()
@@ -38,8 +37,7 @@ func main(){
 	})
 
 	/* Serving the app */
-	app.Listen(":"+port)
-	fmt.Println("Server listening on: " + port)
+	app.Listen(":" + port)
 	
 }
 

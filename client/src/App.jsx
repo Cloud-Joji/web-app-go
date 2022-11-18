@@ -4,7 +4,7 @@ function App() {
 
   return (
     <div>
-      <h1>Hello World with Vite</h1>
+      <h1>Hello World with Vite & Cloud Run!</h1>
       <button onClick={async () => {
         const response = await fetch('http://localhost:4000/users')
         const data = await response.json()
