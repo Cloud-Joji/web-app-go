@@ -32,7 +32,7 @@ func main(){
 	/* Route when get petitions */
 	app.Get("/users", func(c *fiber.Ctx) error {
 		return c.JSON(&fiber.Map{
-			"data": ["Users from backend", "New Array", "Works!"],
+			"data": "Users from backend",
 		})
 	})
 
