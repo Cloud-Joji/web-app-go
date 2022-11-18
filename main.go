@@ -79,9 +79,9 @@ func main(){
 	})
 
 	/* Get certs */
-	app.Get("/certs", func(c *fiber.Ctx) error {
-		
-	})
+	/*app.Get("/certs", func(c *fiber.Ctx) error {
+
+	})*/
 
 	/* Serving the app */
 	app.Listen(":" + port)
