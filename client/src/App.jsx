@@ -1,12 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function App() {
     
   const [name, setName] = useState('');
+  const [certs, setCerts] = useState([])
+
+  async function loadCerts(){
+    const response = await fetch(/*import.meta.env.VITE_BE_URI + */'/certs')
+    const data = await response.json()
+    setCerts(data.certs)
+  }
+
+  useEffect(() => {
+    loadCerts()
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const response = await fetch('/certs', {
+    const response = await fetch(/*import.meta.env.VITE_BE_URI + */'/certs', {
       method: 'POST',
       body: JSON.stringify({name}),
       headers: {
@@ -14,21 +25,10 @@ function App() {
       }
     })
     const data = await response.json()
-    console.log(data)
+    loadCerts()
   }
 
   return (
-  /*
-    <div>
-      <h1>Hello World with Vite & Cloud Run!</h1>
-      <button onClick={ async () => {
-        const response = await fetch('/certs')
-        const data = await response.json()
-        console.log(data)
-      }}>Get Data</button>
-    </div>
-  */
-
     <div>
 
     <form onSubmit={handleSubmit}>
@@ -40,6 +40,12 @@ function App() {
 
       <button>Save</button>
     </form>
+
+    <ul>
+      {certs.map(cert => (
+        <li key={cert._id}>{cert.name}</li>
+      ))}
+    </ul>
 
     </div>
   )

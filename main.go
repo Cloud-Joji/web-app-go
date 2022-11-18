@@ -50,13 +50,6 @@ func main(){
 	/* Serve static files as routes */
 	app.Static("/", "./client/dist")
 
-	/* Route when get petitions */
-	app.Get("/certs", func(c *fiber.Ctx) error {
-		return c.JSON(&fiber.Map{
-			"data": "Certifications from backend",
-		})
-	})
-
 	/* Send data to database */
 	app.Post("/certs", func(c *fiber.Ctx) error {
 		var cert models.Cert
@@ -79,9 +72,27 @@ func main(){
 	})
 
 	/* Get certs */
-	/*app.Get("/certs", func(c *fiber.Ctx) error {
+	app.Get("/certs", func(c *fiber.Ctx) error {
+		var certs []models.Cert
+		
+		coll := client.Database("go-cert-wapp").Collection("Platzi")
+		results, err := coll.Find(context.TODO(), bson.M{})
 
-	})*/
+		if err != nil {
+			panic(err)
+		}
+
+		for results.Next(context.TODO()){
+			var cert models.Cert
+			results.Decode(&cert)
+			certs = append(certs, cert)
+		}
+
+		return c.JSON(&fiber.Map{
+			"certs" : certs,
+		})
+
+	})
 
 	/* Serving the app */
 	app.Listen(":" + port)
