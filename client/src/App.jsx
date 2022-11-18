@@ -6,9 +6,12 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const response = await fetch(import.meta.env.VITE_BE_URI + '/users', {
+    const response = await fetch(import.meta.env.VITE_BE_URI + '/certs', {
       method: 'POST',
-      body: JSON.stringify({name})
+      body: JSON.stringify({name}),
+      headers: {
+        "Content-Type" : "application/json"
+      }
     })
     const data = await response.json()
     console.log(data)
@@ -19,7 +22,7 @@ function App() {
     <div>
       <h1>Hello World with Vite & Cloud Run!</h1>
       <button onClick={ async () => {
-        const response = await fetch('/users')
+        const response = await fetch('/certs')
         const data = await response.json()
         console.log(data)
       }}>Get Data</button>

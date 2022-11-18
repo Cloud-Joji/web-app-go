@@ -57,19 +57,30 @@ func main(){
 		})
 	})
 
+	/* Send data to database */
 	app.Post("/certs", func(c *fiber.Ctx) error {
 		var cert models.Cert
 
 		c.BodyParser(&cert)
 
 		coll := client.Database("go-cert-wapp").Collection("Platzi")
-		coll.InsertOne(context.TODO(), bson.D{
+		result, err := coll.InsertOne(context.TODO(), bson.D{
 			{"name", cert.Name},
 		})
 
+		if err != nil {
+			panic(err)
+		}
+
 		return c.JSON(&fiber.Map{
-			"data": "Adding certification...",
+			"data": result,
+			
 		})
+	})
+
+	/* Get certs */
+	app.Get("/certs", func(c *fiber.Ctx) error {
+		
 	})
 
 	/* Serving the app */
