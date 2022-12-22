@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 
 function App() {
     
-  const [name, setName] = useState('');
   const [certs, setCerts] = useState([])
+  const [name, setName] = useState('');
+  const [platform, setPlatform] = useState('Choose')
 
   async function loadCerts(){
-    const response = await fetch(/*import.meta.env.VITE_BE_URI + */'/certs')
+    const response = await fetch('/api/certs')  
     const data = await response.json()
     setCerts(data.certs)
   }
@@ -17,9 +18,12 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const response = await fetch(/*import.meta.env.VITE_BE_URI + */'/certs', {
+    console.log(name)
+    console.log(platform)
+    console.log(JSON.stringify({name, platform}))
+    const response = await fetch('/api/certs', {
       method: 'POST',
-      body: JSON.stringify({name}),
+      body: JSON.stringify({name, platform}),
       headers: {
         "Content-Type" : "application/json"
       }
@@ -32,18 +36,34 @@ function App() {
     <div>
 
     <form onSubmit={handleSubmit}>
-      <input 
-        type="name" 
-        placeholder="Certification name" 
-        onChange={e => setName(e.target.value)} 
-      />
+      <label>
+        Certification Name 
+        <input 
+          type="name" 
+          placeholder="Certification name" 
+          onChange={e => setName(e.target.value)} 
+        />
+      </label>
+
+      <label>
+        Certification Platform 
+      <select value={platform} onChange={e => setPlatform(e.target.value)}>
+        <option value="Codigo Facilito">Codigo Facilito</option>
+        <option value="Coursera">Coursera</option>
+        <option value="ED Team">ED Team</option>
+        <option value="LinkedIn Learning">LinkedIn Learning</option>
+        <option value="Platzi">Platzi</option>
+        <option value="Udemy">Udemy</option>
+        <option value="Choose">Choose</option>
+      </select>
+      </label>
 
       <button>Save</button>
     </form>
 
     <ul>
       {certs.map(cert => (
-        <li key={cert._id}>{cert.name}</li>
+        <li key={cert._id}>{cert.name} @ {cert.platform}</li>
       ))}
     </ul>
 
