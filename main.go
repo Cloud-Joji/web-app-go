@@ -38,7 +38,7 @@ func main() {
 	cluster := os.Getenv("DB_CLUSTER")
 
 	uri := "mongodb+srv://" + username + ":" + password + "@" + cluster + "/?retryWrites=true&w=majority"
-	fmt.Println(uri)
+	fmt.Println("Database Connected")
 
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
 
@@ -50,7 +50,7 @@ func main() {
 	app.Use(cors.New())
 
 	/* Serve static files as routes */
-	//app.Static("/", "./client/dist")
+	app.Static("/", "./client/dist")
 
 	/* Send data to database */
 	app.Post("/api/certs", func(c *fiber.Ctx) error {
